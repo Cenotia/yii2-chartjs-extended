@@ -30,6 +30,7 @@ Once the extension is installed, simply use it in your code like this :
 In the view
 
 ```php
+<?php use cenotia\components\chartjs\ChartJs; ?>
 <?= ChartJs::widget([
                    'type' => 'pie',
                    'options' => [

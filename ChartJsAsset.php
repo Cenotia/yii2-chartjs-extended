@@ -1,11 +1,11 @@
 <?php
 /**
- * author     : forecho <caizhenghai@gmail.com>
+ * author     : x.Villamuera <xavier.villamuera@gmail.com>
  * createTime : 2016/5/16 19:51
  * description:
  */
 
-namespace yiier\chartjs;
+namespace cenotia\components\chartjs;
 
 use yii\web\AssetBundle;
 
