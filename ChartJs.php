@@ -124,13 +124,40 @@ class ChartJs extends Widget
                     var tooltipData = allData[tooltipItem.index];
                     var total = 0;
                     for (var i in allData) {
-                        total += allData[i];
+                        total = total + (allData[i]*1);
+                        
                     }
                     var tooltipPercentage = Math.round((tooltipData / total) * 100);
                     return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                 }
             }
         },";
+
+        $drawpievalues = "function drawSegmentValues()
+        {
+            for(var i=0; i<chartJS_{$id}.segments.length; i++)
+            {
+                ctx.fillStyle='white';
+                var textSize = canvas.width/10;
+                ctx.font= textSize+'px Verdana';
+                // Get needed variables
+                var value = chartJS_{$id}.segments[i].value;
+                var startAngle = chartJS_{$id}.segments[i].startAngle;
+                var endAngle = chartJS_{$id}.segments[i].endAngle;
+                var middleAngle = startAngle + ((endAngle - startAngle)/2);
+
+                // Compute text location
+                var posX = (radius/2) * Math.cos(middleAngle) + midX;
+                var posY = (radius/2) * Math.sin(middleAngle) + midY;
+
+                // Text offside by middle
+                var w_offset = ctx.measureText(value).width/2;
+                var h_offset = textSize/4;
+
+                ctx.fillText(value, posX - w_offset, posY + h_offset);
+            }
+        }";
+        $pievalues = "'onAnimationProgress': drawSegmentValues(),";
         $type = $this->type;
         $view = $this->getView();
         $backgroundColor = $this->backgroundColor;

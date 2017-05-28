@@ -32,7 +32,7 @@ In the view
 ```php
 <?php use cenotia\components\chartjs\ChartJs; ?>
 <?= ChartJs::widget([
-                   'type' => 'pie',
+                   'type' => 'pie',//bar,line,pie,radar,polar, bubble
                    'options' => [
                        'height' => 180,
                        'width' => 180,
@@ -43,7 +43,7 @@ In the view
                                'labels' => $data4['labels'],
                                'datasets' => [
                                        [
-                                           'label'=> 'yourlable',
+                                           'label'=> 'yourlables',
                                            'data'=> $data4['datasets'],
                                            'backgroundColor' => [
                                                               '#FF6384',
