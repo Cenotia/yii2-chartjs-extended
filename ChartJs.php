@@ -18,6 +18,7 @@ use yii\helpers\Json;
  * //in the view
  * <?= ChartJs::widget([
  *                 'type' => 'pie',
+                    yaxisSign => '€ ',
  *                   'options' => [
  *                       'height' => 180,
  *                       'width' => 180,
@@ -68,6 +69,12 @@ class ChartJs extends Widget
      * Provides percentages for tooltips
      */
     public $labelPercent = false;
+    
+    /**
+     * @var array
+     * A sign prepended to axis : example, a currency sign (€,$,...)
+     */
+    public $yaxisSign = '€ ';
 
     /**
      * @var array
@@ -114,6 +121,8 @@ class ChartJs extends Widget
 
     protected function registerClientScript()
     {
+        
+        
         $id = $this->options['id'];
         //add percentage to the tooltips
         $percenttooltips = "tooltips: {
@@ -128,10 +137,30 @@ class ChartJs extends Widget
                         
                     }
                     var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                    return tooltipLabel + ': ' + '".$this->yaxisSign."' + (numeral(tooltipData).format('0,0.0')).replace(',',' ') + ' (' + tooltipPercentage + '%)';
                 }
             }
         },";
+        
+        $axeformat = "scales: {
+        yAxes: [{
+          ticks: {
+            //beginAtZero: true,
+            callback: function(value, index, values) {
+              if (isNaN(value))
+                return value;
+              else
+              {
+                if(parseInt(value) >= 1000){
+                  return  '".$this->yaxisSign."' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, \" \");
+                } else {
+                  return  '".$this->yaxisSign."' + value;
+                }
+               }
+              }
+          }
+        }]
+      },";
 
         $drawpievalues = "function drawSegmentValues()
         {
@@ -167,6 +196,8 @@ class ChartJs extends Widget
         $options = '{';
         if ($this->labelPercent)
             $options .= $percenttooltips;
+        if ($this->type == 'bar')
+            $options .= $axeformat;
         $options .= '}';
 
         $options = $options;
