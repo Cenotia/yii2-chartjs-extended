@@ -148,13 +148,13 @@ class ChartJs extends Widget
             //beginAtZero: true,
             callback: function(value, index, values) {
               if (isNaN(value))
-                return value;
+                return Math.round(value * 100) / 100;
               else
               {
                 if(parseInt(value) >= 1000){
                   return  '".$this->yaxisSign."' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, \" \");
                 } else {
-                  return  '".$this->yaxisSign."' + value;
+                  return  '".$this->yaxisSign."' + Math.round(value * 100) / 100;
                 }
                }
               }
